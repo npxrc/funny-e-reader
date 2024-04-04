@@ -21,7 +21,7 @@ function load(){
         $('content').innerHTML = chapters[currentChapter-1];
     })
 }
-function next(){
+function next(top){
     if (currentChapter<chapters.length){
         currentChapter++;
         localStorage.setItem('currChapter', currentChapter)
@@ -31,12 +31,16 @@ function next(){
         $('reader').scroll({top: 0,left: 0,behavior: "smooth"});
     }
 }
-function prev(){
+function prev(top){
     if (currentChapter>1){
         currentChapter--;
         localStorage.setItem('currChapter', currentChapter)
         $('content').innerHTML = chapters[currentChapter-1];
-        $('reader').scroll({top: 999999,left: 0,behavior: "smooth"});
+        if (top=="top"){
+            $('reader').scroll({top: 999999,left: 0,behavior: "smooth"});
+        } else {
+            $('reader').scroll({top: 999999,left: 0,behavior: "instant"});
+        }
     } else{
         $('reader').scroll({top: 0,left: 0,behavior: "smooth"});
     }
