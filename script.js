@@ -36,7 +36,7 @@ function prev(){
         currentChapter--;
         localStorage.setItem('currChapter', currentChapter)
         $('content').innerHTML = chapters[currentChapter-1];
-        $('reader').scroll({top: 0,left: 0,behavior: "smooth"});
+        $('reader').scroll({top: 999999,left: 0,behavior: "smooth"});
     } else{
         $('reader').scroll({top: 0,left: 0,behavior: "smooth"});
     }
