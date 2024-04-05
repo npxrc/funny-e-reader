@@ -16,8 +16,11 @@
     </head>
     <body>
         <div id="reader">
-            <button id="prevTop" onclick="prev('top')">Previous</button>
-            <button id="nextTop" onclick="next('top')">Next</button>
+            <span id="controls">
+                <button id="prevTop" onclick="prev('top')">Previous</button>
+                <button id="nextTop" onclick="next('top')">Next</button>
+                <button id="readAloud" onclick="readAloud()">Read Aloud</button>
+            </span>
             <div id="noContent"><h2>No content loaded</h2>Check the console for details if the file isnt loaded soon :)</div>
             <div id="content"></div>
             <br>

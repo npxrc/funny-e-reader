@@ -7,6 +7,15 @@ if (localStorage.getItem('currChapter')!==null&&localStorage.getItem('currChapte
 } else {
     localStorage.setItem('currChapter', 1)
 }
+function loadChapter(){
+    localStorage.setItem('currChapter', currentChapter)
+    if (currentChapter==chapters.length){
+        $('content').innerHTML = `${chapters[currentChapter-1]}<h3>End of Selection</h3>`;
+    } else{
+        $('content').innerHTML = `${chapters[currentChapter-1]}<h3>End of Chapter ${currentChapter}</h3>`;
+    }
+    $('content').querySelector('h3').innerHTML+=` ${currentChapter}`
+}
 function load(){
     fetch(`TKAM.txt`).then(response => response.text()).then(data => {
         data=data.split('å');
@@ -16,33 +25,55 @@ function load(){
             chapters.push(tmp[i])
         }
         chapters=chapters[0]
-        chapters.splice(0,1)
+        chapters.splice(0, 1)
         $('noContent').classList.add('hidden');
-        $('content').innerHTML = chapters[currentChapter-1];
+        loadChapter()
     })
 }
+load()
 function next(top){
     if (currentChapter<chapters.length){
         currentChapter++;
-        localStorage.setItem('currChapter', currentChapter)
-        $('content').innerHTML = chapters[currentChapter-1];
-        $('reader').scroll({top: 0,left: 0,behavior: "smooth"});
+        loadChapter()
+        $('reader').scroll({top: 0, left: 0, behavior: "smooth"});
     } else{
-        $('reader').scroll({top: 0,left: 0,behavior: "smooth"});
+        $('reader').scroll({top: 9999999, left: 0, behavior: "smooth"});
     }
 }
 function prev(top){
     if (currentChapter>1){
         currentChapter--;
-        localStorage.setItem('currChapter', currentChapter)
-        $('content').innerHTML = chapters[currentChapter-1];
+        loadChapter()
         if (top=="top"){
-            $('reader').scroll({top: 999999,left: 0,behavior: "smooth"});
+            $('reader').scroll({top: 999999, left: 0, behavior: "smooth"});
         } else {
-            $('reader').scroll({top: 999999,left: 0,behavior: "instant"});
+            $('reader').scroll({top: 999999, left: 0, behavior: "instant"});
         }
     } else{
-        $('reader').scroll({top: 0,left: 0,behavior: "smooth"});
+        $('reader').scroll({top: 0, left: 0, behavior: "smooth"});
     }
 }
-window.onload=()=>load()
+let speech;
+let text;
+function readAloud(){
+    $('readAloud').classList.add('speaking');
+    text = $('content').innerText;
+    speech = new SpeechSynthesisUtterance(text);
+    speech.lang = 'en-US';
+    speech.rate = 1;
+    speech.pitch = 1;
+    window.speechSynthesis.speak(speech)
+    console.log(speech.voice)
+    $('readAloud').onclick=()=>{
+        stopReadAloud()
+    }
+    $('readAloud').innerHTML='Cancel'
+}
+function stopReadAloud(){
+    $('readAloud').classList.remove('speaking');
+    window.speechSynthesis.cancel()
+    $('readAloud').onclick=()=>{
+        readAloud()
+    }
+    $('readAloud').innerHTML='Read Aloud'
+}
