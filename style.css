@@ -64,6 +64,7 @@ button{
 	width: 100%;
 	padding-bottom: 10px;
 	background: rgb(30,30,50);
+    box-shadow: rgb(30,30,50) 0 10px 20px -10px;
 }
 #readAloud{
 	background: rgb(90, 160, 240);
